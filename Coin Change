@@ -1,0 +1,56 @@
+//Method 1
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int dp[][] = new int[coins.length][amount+1];
+        for(int i =0;i<coins.length;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        int result = _coinChange(coins,amount,coins.length-1,dp);
+        if(result==Integer.MAX_VALUE-1)
+            return -1;
+        return result;
+    }
+    public int _coinChange(int[] coins, int amount,int index,int[][] dp) {
+        
+        if(index==0){
+            if(amount%coins[0]==0)return amount/coins[0];
+            return Integer.MAX_VALUE-1;
+        }
+        if(dp[index][amount]!=-1)
+            return dp[index][amount];
+        int nottake = _coinChange(coins,amount,index-1,dp);
+        int take = Integer.MAX_VALUE;
+        if(coins[index]<=amount)
+            take = 1+_coinChange(coins,amount-coins[index],index,dp);
+        return dp[index][amount] = Math.min(nottake,take);
+    }
+}
+//Method2 to remove the auxilary stack space we go to the tabulation
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int dp[][] = new int[coins.length][amount+1];
+        for(int i =0;i<coins.length;i++){
+            Arrays.fill(dp[i],0);
+        }
+        for(int i=0;i<=amount;i++){
+            if(i%coins[0]==0)
+                dp[0][i]=i/coins[0];
+            else
+                dp[0][i] = Integer.MAX_VALUE-1;
+        }
+        for(int i=1;i<coins.length;i++){
+            for(int t=0;t<=amount;t++){
+                int nottake = dp[i-1][t];
+                int take = Integer.MAX_VALUE;
+                if(coins[i]<=t)
+                    take = 1+dp[i][t-coins[i]];
+                dp[i][t] = Math.min(nottake,take);
+            }
+            
+        }
+        int result = dp[coins.length-1][amount];
+        if(result==Integer.MAX_VALUE-1)
+            return -1;
+        return result;
+    }
+}
