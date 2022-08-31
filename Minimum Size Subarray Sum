@@ -1,0 +1,21 @@
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        
+        int i=0,j=0,localsum=0;
+        int count = Integer.MAX_VALUE;
+        while(i<=j && j<nums.length){
+            if(localsum + nums[j] < target){
+               localsum+=nums[j]; 
+               j++;
+            }else{
+                localsum=localsum-nums[i];
+                count = Math.min(j-i+1,count);
+                i++;
+            }
+            
+        }
+        if(i==0)return 0;
+        return count;
+        
+    }
+}
