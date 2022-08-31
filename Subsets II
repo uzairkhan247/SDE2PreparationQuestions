@@ -1,1 +1,24 @@
-
+class Solution {
+    List<List<Integer>> resultlst;
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        resultlst = new ArrayList<>();
+        Arrays.sort(nums);
+        subsets(nums,0,new ArrayList<>());
+        return resultlst;
+        
+    }
+    public void subsets(int[] nums,int index,ArrayList<Integer> arrlst) {
+         
+        
+         resultlst.add(new ArrayList<>(arrlst));
+         
+         
+         for(int i=index;i<nums.length;i++){
+             if(i>index && nums[i-1] == nums[i])
+                 continue;
+             arrlst.add(nums[i]);
+             subsets(nums,i+1,arrlst);
+             arrlst.remove(arrlst.size()-1);
+         }
+    }
+}
