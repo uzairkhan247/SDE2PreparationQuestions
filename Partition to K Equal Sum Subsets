@@ -1,0 +1,39 @@
+class Solution {
+   
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        
+        int sum = 0;
+        for(int i=0;i<nums.length;i++)
+            sum+=nums[i];
+        if(sum%k!=0)
+            return false;
+        boolean[] dp = new boolean[nums.length];
+        Arrays.fill(dp,false);
+        
+        return _canPartitionKSubsets(nums,k,0,dp,0,sum/k);
+        
+    }
+    public boolean _canPartitionKSubsets(int[] nums, int k,int index,boolean[] visited,int subsetsum,int target) {
+        
+       
+        if(k==1)
+            return true;
+        
+        if(subsetsum==target)
+            return _canPartitionKSubsets(nums,k-1,0,visited,0,target);
+        
+        for(int i=index;i<nums.length;i++){
+            if(visited[i] || nums[i]+subsetsum >target)
+                continue;
+            
+            visited[i]=true;
+            if(_canPartitionKSubsets(nums,k,i+1,visited,subsetsum+nums[i],target))
+                return true;
+            visited[i]=false;
+            
+        }
+        return false;
+        
+    }
+    
+}
