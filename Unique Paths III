@@ -1,0 +1,45 @@
+class Solution {
+    int[][] dp;
+    public int uniquePathsIII(int[][] grid) {
+        dp=new int[grid.length][grid[0].length];
+        for(int[] arr : dp)
+            Arrays.fill(arr,-1);
+        int row=0;
+        int col = 0;
+        int m=0,n=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1){
+                    row=i;
+                    col=j;
+                }
+                if(grid[i][j]==2){
+                    m=i;
+                    n=j;
+                }
+            }
+        }
+        
+        return _uniquePaths(grid,row,col,m,n,grid.length,grid[0].length);
+    }
+    public int _uniquePaths(int[][] obstacleGrid,int i,int j,int m,int n,int row,int col) {
+        
+        System.out.println("==i=="+i);
+         if(i>=row || j>=col || i<0 || j<0)
+             return 0;
+         if(obstacleGrid[i][j]==-1)
+             return 0;
+         if(i==m && j==n)
+             return 1;
+         if(dp[i][j]!=-1)
+             return dp[i][j];
+        
+        int right = _uniquePaths(obstacleGrid,i+1,j,m,n,row,col);
+        int down = _uniquePaths(obstacleGrid,i,j+1,m,n,row,col);
+        int top = _uniquePaths(obstacleGrid,i-1,j,m,n,row,col);
+        int left = _uniquePaths(obstacleGrid,i,j-1,m,n,row,col);
+        
+        
+        return dp[i][j]=right+down+top+left;
+    }
+}
