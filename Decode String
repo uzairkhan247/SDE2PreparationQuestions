@@ -1,0 +1,64 @@
+class Solution {
+    public String decodeString(String s) {
+        Stack<Integer> stack = new Stack<Integer>();
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(ch!=']')
+                stack.push(ch);
+            else{
+                StringBuilder sb = new StringBuilder();
+                while(!stack.isEmpty() && Character.isLetter(stack.peek()))
+                    sb.append(0,stack.pop());
+                String sub = sb.toString();
+                statck.pop();
+                
+                sb = new StringBuilder();
+                while(!stack.isEmpty() && Character.isDigit(stack.peek()))
+                    sb.append(0,stack.pop());
+                int count = Integer.valueOf(sb.toString());
+                while(count > 0){
+                    for(char chi : sub.toCharArray())
+                        stack.push(chi);
+                    count--;
+                }
+                
+            }
+                                
+        }
+        StringBuilder ans = new StringBuilder();
+        while(!stack.isEmpty()){
+           ans.append(0,stack.pop());
+        }
+    }
+    public String decode(String s) {
+        
+        int count = 0;
+        StringBuilder res = new StringBuilder();
+        
+        for(int i=0;i<s.length();i++){
+            if(Character.isDigit(s.charAt(i)))
+               count = count*10+(s.charAt(i)-'0');
+            else if(s.charAt(i)=='['){
+                int open = 1;
+                int j = i;
+                while(open > 0){
+                    j++;
+                    if(s.charAt(j)=='[')
+                        open++;
+                    else if(s.charAt(j)==']')
+                        open--;
+                }
+                String temp = decode(s.substring(i+1,j));
+                for(int k=0;k<count;k++)
+                    res.append(temp);
+                count = 0;
+                i = j;    
+            }else if(s.charAt(i)==']')
+                return res.toString();
+            else
+                res.append(s.charAt(i));
+        }
+        return res.toString();
+        
+    }
+}
