@@ -1,0 +1,35 @@
+class Solution {
+    public int longestStrChain(String[] words) {
+        
+        int[] dp = new int[words.length];
+        int max = 0;
+
+         Arrays.fill(dp,1);
+         Arrays.sort(words);
+         for(int i=1;i<words.length;i++){
+             for(int j=i-1;j>=0;j--){
+                 if(isCompare(words[i],words[j]) && dp[i] < dp[j]+1){
+                     dp[i] = dp[j]+1;
+                 }
+             }
+             max = Math.max(max,dp[i]);
+         }
+        return max;
+    }
+    public boolean isCompare(String word1,String word2){
+        int i=0,j=0;
+        if(word1.length()!=word2.length()+1)
+            return false;
+        while(i<word1.length() && j<word2.length()){
+            if(word1.charAt(i)==word2.charAt(j)){
+                i++;
+                j++;
+            }else
+                i++;
+        }
+        if(i==word1.length() && j==word2.length())
+            return true;
+        else
+            return false;
+    }
+}
