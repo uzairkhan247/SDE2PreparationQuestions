@@ -1,0 +1,21 @@
+class Solution {
+    int[][] dp;
+    public int lengthOfLIS(int[] nums) {
+         dp = new int[nums.length][nums.length+1];
+        for(int[] arr : dp){
+            Arrays.fill(arr,-1);
+        }
+         return _lengthOfLIS(nums,0,-1,nums.length);
+    }
+     public int _lengthOfLIS(int[] nums,int index,int previndex,int n) {
+        if(index==n)
+            return 0;
+         if(dp[index][previndex+1]!=-1)
+             return dp[index][previndex+1];
+         int len = 0 + _lengthOfLIS(nums,index+1,previndex,n);
+         if(previndex==-1 || nums[index] > nums[previndex]){
+             len = Math.max(len,1+_lengthOfLIS(nums,index+1,index,n));
+         }
+         return dp[index][previndex+1] = len;
+    }
+}
